@@ -1,7 +1,15 @@
 #include <stdio.h>
 #include <windows.h>
 #include <conio.h>
-#include <time.h> 
+#include <time.h>
+#include <string.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 clock_t startDropT, endT, startGroundT;
 int x = 8, y = 0;
@@ -9,6 +17,11 @@ RECT blockSize;
 int blockForm;
 int blockRotation = 0;
 int key;
+int score = 0;
+int nextBlockForm;
+
+clock_t startT;
+int gameTime = 5;
 
 int block[7][4][4][4] = {
 	{ // T모양 블럭
@@ -225,6 +238,7 @@ void DrawMap();
 void DrawBlock();
 void InputKey();
 void textcolor(int foreground, int background);
+void draw_rectangle(int w, int h, int x, int y, wstring str, wstring content);
 
 int main() {
 	Init();
@@ -250,6 +264,54 @@ void Init() {
 	srand(time(NULL));
 }
 
+void draw_rectangle(int w, int h, int x, int y, string str, string content)
+{
+	int i, j;
+	unsigned char a = 0xa6;
+	unsigned char b[7];
+
+	for (i = 1; i < 7; i++)
+		b[i] = 0xa0 + i;
+
+	gotoxy(x, y);
+	printf("%c%c", a, b[3]);
+	for (i = 0; i < w; i++)
+	{
+		if (i == (w / 2) - ((str.length() / 2) - 2))
+		{
+			// - (str.length() / 2)) {
+			cout << " " << str << " ";
+			i+=2;
+		}
+		else
+			printf("%c%c ", a, b[1]);
+	}
+	printf("%c%c", a, b[4]);
+	printf("\n");
+
+	for (i = 0; i <= h; i++)
+	{
+		gotoxy(x, y + i + 1);
+		printf("%c%c", a, b[2]);
+		for (j = 0; j < w; j++)
+			printf("  ");
+
+		printf("%c%c", a, b[2]);
+		printf("\n");
+	}
+
+	gotoxy(x, y + h+1);
+	printf("%c%c", a, b[6]);
+	for (i = 0; i < w; i++)
+		printf("%c%c ", a, b[1]);
+	printf("%c%c", a, b[5]);
+	printf("\n");
+
+	gotoxy((x + (w / 2)) + ((content.length() / 2)), y + (h / 2) + 1);
+	cout << content;
+}
+
+
 void gotoxy(int x, int y) {
 	COORD pos;
 	pos.X = x;
@@ -257,13 +319,11 @@ void gotoxy(int x, int y) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-
-
 void CreateRandomForm() {
 	blockForm = rand() % 7;
 }
 
-int  CheckCrash(int x, int y) {
+int CheckCrash(int x, int y) {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (block[blockForm][blockRotation][i][j] == 1) {
@@ -289,7 +349,6 @@ void DropBlock() {
 }
 
 void BlockToGround() {
-
 	if (CheckCrash(x, y + 1) == true) {
 		if ((float)(endT - startGroundT) > 1500) {
 			// 현재 블록 저장
@@ -297,7 +356,7 @@ void BlockToGround() {
 				for (int j = 0; j < 4; j++) {
 					if (block[blockForm][blockRotation][i][j] == 1) {
 						space[i + y][j + x / 2] = blockForm + 2;
-					// 블럭의 번호를 space에 2가 아닌 blockForm+2로 저장해서 색상 지정
+						// 블럭의 번호를 space에 2가 아닌 blockForm+2로 저장해서 색상 지정
 						gotoxy(x + j * 2, y + i);
 						printf("■");
 					}
@@ -322,13 +381,23 @@ void RemoveLine() {
 			for (int j = 0; i - j >= 0; j++) {
 				for (int x = 1; x < 11; x++) {
 					if (i - j - 1 >= 0)
+					{
 						space[i - j][x] = space[i - j - 1][x];
+						// 줄이 다 차면 지워줌
+					}
 					else      // 천장이면 0저장
 						space[i - j][x] = 0;
 				}
 			}
+			score+=100;
 		}
 	}
+}
+
+void textcolor(int foreground, int background)
+{
+	int color = foreground + background * 16;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
 void DrawMap() {
@@ -341,27 +410,41 @@ void DrawMap() {
 			}
 			else if (space[i][j] >= 2) {
 				gotoxy(j * 2, i);
-				textcolor(space[i][j] + 4, space[i][j]+4);
+				textcolor(space[i][j]+6, space[i][j]+6);
 				printf("■");
 			}
 
 			textcolor(15, 0);
 		}
 	}
-}
 
-void textcolor(int foreground, int background)
-{
-	int color = foreground + background * 16;
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
 
+	draw_rectangle(10, 8, 25, 1, "다음 블럭", to_string(blockForm));
+	draw_rectangle(10, 3, 25, 12, "점수", to_string(score) + "점");
+}
+// nextBlockForm 만들기
 void DrawBlock() {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (block[blockForm][blockRotation][i][j] == 1) {
 				gotoxy(x + j * 2, y + i);
-				textcolor(blockForm + 4, blockForm + 4);
+				
+				textcolor(blockForm + 8, blockForm + 8);
+				printf("■");
+				textcolor(15, 0);
+			}
+		}
+	}
+}
+
+void DrawBlock2(int x, int y) {
+	gotoxy(x, y);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (block[blockForm][blockRotation][i][j] == 1) {
+				gotoxy(x + j * 2, y + i);
+
+				textcolor(blockForm + 8, blockForm + 8);
 				printf("■");
 				textcolor(15, 0);
 			}
