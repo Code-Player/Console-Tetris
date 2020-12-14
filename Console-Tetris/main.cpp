@@ -11,6 +11,7 @@
 #include <sstream>
 #include <memory>
 
+
 using namespace std;
 
 clock_t startDropT, endT, startGroundT;
@@ -32,7 +33,7 @@ clock_t startT;
 int gameTime = 5;
 
 int block[7][4][4][4] = {
-	{ // T¸ğ¾ç ºí·°
+	{ // Tëª¨ì–‘ ë¸”ëŸ­
 		{
 			{0,0,0,0},
 			{0,1,0,0},
@@ -58,7 +59,7 @@ int block[7][4][4][4] = {
 			{0,1,0,0}
 		}
 	},
-	{    // ¹ø°³ ºí·°
+	{    // ë²ˆê°œ ë¸”ëŸ­
 		{
 			{0,0,0,0},
 			{0,1,1,0},
@@ -84,7 +85,7 @@ int block[7][4][4][4] = {
 			{0,1,0,0}
 		}
 	},
-	{   // ¹ø°³ ºí·° ¹İ´ë
+	{   // ë²ˆê°œ ë¸”ëŸ­ ë°˜ëŒ€
 		{
 			{0,0,0,0},
 			{1,1,0,0},
@@ -110,7 +111,7 @@ int block[7][4][4][4] = {
 			{1,0,0,0}
 		}
 	},
-	{   // 1ÀÚÇü ºí·°
+	{   // 1ìí˜• ë¸”ëŸ­
 		{
 			{0,1,0,0},
 			{0,1,0,0},
@@ -136,7 +137,7 @@ int block[7][4][4][4] = {
 			{0,0,0,0}
 		}
 	},
-	{   // LÀÚÇü ºí·°
+	{   // Lìí˜• ë¸”ëŸ­
 		{
 			{0,0,0,0},
 			{1,0,0,0},
@@ -162,7 +163,7 @@ int block[7][4][4][4] = {
 			{0,0,0,0}
 		}
 	},
-	{   // LÀÚÇü ºí·° ¹İ´ë
+	{   // Lìí˜• ë¸”ëŸ­ ë°˜ëŒ€
 		{
 			{0,0,0,0},
 			{0,0,1,0},
@@ -188,7 +189,7 @@ int block[7][4][4][4] = {
 			{0,1,0,0}
 		}
 	},
-	{   // ³×¸ğ ºí·°
+	{   // ë„¤ëª¨ ë¸”ëŸ­
 		{
 			{0,0,0,0},
 			{0,1,1,0},
@@ -216,7 +217,7 @@ int block[7][4][4][4] = {
 	}
 };
 
-int space[15 + 1][10 + 2] = {  // ¼¼·Î 15+1(¾Æ·¡º®)Ä­, °¡·Î 10+2(¾çÂÊ º®)Ä­  
+int space[15 + 1][10 + 2] = {  // ì„¸ë¡œ 15+1(ì•„ë˜ë²½)ì¹¸, ê°€ë¡œ 10+2(ì–‘ìª½ ë²½)ì¹¸  
 	{1,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,1},
@@ -265,9 +266,9 @@ int main() {
 	cout << "Tetris Game" << endl;
 
 	string description[] = { 
-		"¿£ÅÍ Å° :              ºí·Ï ÀúÀå",
-		"½ºÆäÀÌ½º¹Ù Å° :        ºí·Ï È¸Àü",
-		"¹æÇâÅ°(¿ŞÂÊ, ¿À¸¥ÂÊ) : ºí·Ï ÀÌµ¿\n",
+		"ì—”í„° í‚¤ :              ë¸”ë¡ ì €ì¥",
+		"ìŠ¤í˜ì´ìŠ¤ë°” í‚¤ :        ë¸”ë¡ íšŒì „",
+		"ë°©í–¥í‚¤(ì™¼ìª½, ì˜¤ë¥¸ìª½) : ë¸”ë¡ ì´ë™\n",
 	};
 	int i = 8;
 	for (auto s :description) {
@@ -276,13 +277,13 @@ int main() {
 		i++;
 	}
 	gotoxy(3, 12);
-	cout << "ÄŞº¸ ½Ã½ºÅÛ :: ÇÑ¹ø¿¡ ¿©·¯ÁÙÀ» °İÆÄ ½Ã,";
+	cout << "ì½¤ë³´ ì‹œìŠ¤í…œ :: í•œë²ˆì— ì—¬ëŸ¬ì¤„ì„ ê²©íŒŒ ì‹œ,";
 	textcolor(13, 0);
-	cout << "14Á¡";
+	cout << "14ì ";
 	textcolor(15, 0);
-	cout << "¾¿ Á¡¼ö°¡ Áõ°¡µÇ¾î ÁÖ¾îÁı´Ï´Ù.";
+	cout << "ì”© ì ìˆ˜ê°€ ì¦ê°€ë˜ì–´ ì£¼ì–´ì§‘ë‹ˆë‹¤.";
 	gotoxy(8, 15);
-	cout << "¾Æ¹«Å°³ª ´©¸£¸é °ÔÀÓÀÌ ½ÃÀÛµË´Ï´Ù.";
+	cout << "ì•„ë¬´í‚¤ë‚˜ ëˆ„ë¥´ë©´ ê²Œì„ì´ ì‹œì‘ë©ë‹ˆë‹¤.";
 	//cout << "Enter Key : Block Save\n";
 	//cout << "SpaceBar Key : Block Reform\n";
 	//cout<<"Left, Right Key : Block Move\n";
@@ -377,7 +378,7 @@ int CheckCrash(int x, int y) {
 		for (int j = 0; j < 4; j++) {
 			if (block[blockForm][blockRotation][i][j] == 1) {
 				int t = space[i + y][j + x / 2];
-				if (t == 1 || t >= 2) { // º®ÀÏ ¶§, ºí·°ÀÏ ¶§
+				if (t == 1 || t >= 2) { // ë²½ì¼ ë•Œ, ë¸”ëŸ­ì¼ ë•Œ
 					return true;
 				}
 			}
@@ -400,14 +401,14 @@ void DropBlock() {
 void BlockToGround() {
 	if (CheckCrash(x, y + 1) == true) {
 		if ((float)(endT - startGroundT) > 1500) {
-			// ÇöÀç ºí·Ï ÀúÀå
+			// í˜„ì¬ ë¸”ë¡ ì €ì¥
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					if (block[blockForm][blockRotation][i][j] == 1) {
 						space[i + y][j + x / 2] = blockForm + 2;
-						// ºí·°ÀÇ ¹øÈ£¸¦ space¿¡ 2°¡ ¾Æ´Ñ blockForm+2·Î ÀúÀåÇØ¼­ »ö»ó ÁöÁ¤
+						// ë¸”ëŸ­ì˜ ë²ˆí˜¸ë¥¼ spaceì— 2ê°€ ì•„ë‹Œ blockForm+2ë¡œ ì €ì¥í•´ì„œ ìƒ‰ìƒ ì§€ì •
 						gotoxy(x + j * 2, y + i);
-						printf("¡á");
+						printf("â– ");
 					}
 				}
 			}
@@ -424,23 +425,23 @@ void BlockToGround() {
 }
 
 void RemoveLine() {
-	for (int i = 15; i >= 0; i--) { // º®¶óÀÎ Á¦¿ÜÇÑ °ª
+	for (int i = 15; i >= 0; i--) { // ë²½ë¼ì¸ ì œì™¸í•œ ê°’
 		int cnt = 0;
 		for (int j = 1; j < 11; j++) { // 
 			if (space[i][j] >= 2) {
 				cnt++;
 			}
 		}
-		if (cnt >= 10) { // º®µ¹ÀÌ ´Ù Â÷ÀÖ´Ù¸é
+		if (cnt >= 10) { // ë²½ëŒì´ ë‹¤ ì°¨ìˆë‹¤ë©´
 			for (int j = 0; i - j >= 0; j++) {
 				for (int x = 1; x < 11; x++) {
 					if (i - j - 1 >= 0)
 					{
 						space[i - j][x] = space[i - j - 1][x];
-						// ÁÙÀÌ ´Ù Â÷¸é Áö¿öÁÜ
+						// ì¤„ì´ ë‹¤ ì°¨ë©´ ì§€ì›Œì¤Œ
 					}
 					else
-						// ÃµÀåÀÌ¸é 0ÀúÀå
+						// ì²œì¥ì´ë©´ 0ì €ì¥
 						space[i - j][x] = 0;
 				}
 			}
@@ -464,12 +465,12 @@ void DrawMap() {
 		for (int j = 0; j < 12; j++) {
 			if (space[i][j] == 1) {
 				gotoxy(j * 2, i);
-				printf("¡à");
+				printf("â–¡");
 			}
 			else if (space[i][j] >= 2) {
 				gotoxy(j * 2, i);
 				textcolor(space[i][j] + 6, space[i][j] + 6);
-				printf("¡á");
+				printf("â– ");
 			}
 			 textcolor(15, 0);
 		}
@@ -479,18 +480,18 @@ void DrawMap() {
 
 
 	gotoxy(25, 1);
-	printf("´ÙÀ½ ºí·°");
-	//draw_rectangle(10, 8, 25, 1, "´ÙÀ½ºí·°", "");
+	printf("ë‹¤ìŒ ë¸”ëŸ­");
+	//draw_rectangle(10, 8, 25, 1, "ë‹¤ìŒë¸”ëŸ­", "");
 	gotoxy(50, 1);
-	printf("ÀúÀåµÈ ºí·°");
-//	draw_rectangle(10, 3, 25, 12, "Á¡¼ö", to_string(score) + "Á¡");
+	printf("ì €ì¥ëœ ë¸”ëŸ­");
+//	draw_rectangle(10, 3, 25, 12, "ì ìˆ˜", to_string(score) + "ì ");
 	gotoxy(25, 12);
-	printf("ÃÑ %dÁ¡ / %dÄŞº¸", score, comboStack);
-	//draw_rectangle(10, 8, 50, 1, "ÀúÀåµÈºí·°", "");
+	printf("ì´ %dì  / %dì½¤ë³´", score, comboStack);
+	//draw_rectangle(10, 8, 50, 1, "ì €ì¥ëœë¸”ëŸ­", "");
 	DrawBlock2(32, 4, nextBlockForm);
 	DrawBlock2(58, 4, saveBlock);
 }
-// nextBlockForm ¸¸µé±â
+// nextBlockForm ë§Œë“¤ê¸°
 void DrawBlock() {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -498,7 +499,7 @@ void DrawBlock() {
 				gotoxy(x + j * 2, y + i);
 				
 				textcolor(blockForm + 8, blockForm + 8);
-				printf("¡á");
+				printf("â– ");
 				textcolor(15, 0);
 			}
 		}
@@ -512,7 +513,7 @@ void DrawBlock2(int x, int y, int _blockForm) {
 			if (block[_blockForm][0][i][j] == 1) {
 				gotoxy(x + j * 2, y + i);
 				textcolor(_blockForm + 8, _blockForm + 8);
-				printf("¡á");
+				printf("â– ");
 				textcolor(15, 0);
 			}
 		}
@@ -552,7 +553,7 @@ void InputKey() {
 					saveBlock = blockForm;
 					blockForm = nextBlockForm;
 					CreateRandomForm();
-					// »ç¶óÁü
+					// ì‚¬ë¼ì§
 					//blockForm = nextBlockForm;
 				}
 				else
@@ -565,7 +566,7 @@ void InputKey() {
 				x = 8;
 				savedBlock = true;
 
-				// ÀÌ°É ¸ÇÀ§·Î º¸³»¸é ½ÇÇà Àß  µÊ.
+				// ì´ê±¸ ë§¨ìœ„ë¡œ ë³´ë‚´ë©´ ì‹¤í–‰ ì˜  ë¨.
 			}
 			break;
 		}
