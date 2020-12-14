@@ -9,7 +9,6 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <memory>
 
 using namespace std;
 
@@ -235,7 +234,7 @@ int space[15 + 1][10 + 2] = {  // 세로 15+1(아래벽)칸, 가로 10+2(양쪽 벽)칸
 	{1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
-string board[50][50];
+string board[100][100];
 
 void Init();
 void gotoxy(int x, int y);
@@ -249,47 +248,12 @@ void DrawBlock();
 void DrawBlock2(int x, int y, int block);
 void InputKey();
 void textcolor(int foreground, int background);
-void draw_rectangle(int w, int h, int x, int y, string str, string content);
+void draw_rectangle(int w, int h, int x, int y, wstring str, wstring content);
 
 stringstream ss;
 
-int main() {
+int qq() {
 	Init();
-	DrawBlock2(4, 2, 3);
-	DrawBlock2(10, 2, 1);
-	DrawBlock2(10, 3, 5);
-	DrawBlock2(20, 3, 6);
-	DrawBlock2(16, 3, 5);
-	DrawBlock2(8, 0, 4);
-	gotoxy(16, 2);
-	cout << "Tetris Game" << endl;
-
-	string description[] = { 
-		"엔터 키 :              블록 저장",
-		"스페이스바 키 :        블록 회전",
-		"방향키(왼쪽, 오른쪽) : 블록 이동\n",
-	};
-	int i = 8;
-	for (auto s :description) {
-		gotoxy(3, i);
-		cout << s << endl;
-		i++;
-	}
-	gotoxy(3, 12);
-	cout << "콤보 시스템 :: 한번에 여러줄을 격파 시,";
-	textcolor(13, 0);
-	cout << "14점";
-	textcolor(15, 0);
-	cout << "씩 점수가 증가되어 주어집니다.";
-	gotoxy(8, 15);
-	cout << "아무키나 누르면 게임이 시작됩니다.";
-	//cout << "Enter Key : Block Save\n";
-	//cout << "SpaceBar Key : Block Reform\n";
-	//cout<<"Left, Right Key : Block Move\n";
-	
-	_getch();
-	system("cls");
-
 	startDropT = clock();
 	CreateRandomForm();
 
@@ -317,6 +281,18 @@ void draw_rectangle(int w, int h, int x, int y, string str, string content)
 	int i, j;
 	unsigned char a = 0xa6;
 	unsigned char b[7];
+	unsigned char grid[100][100];
+
+	grid[0][0] = 'c';
+	grid[0][1] = 'a';
+	grid[1][0] = 'c';
+	// null부분 고치기
+	//for (int i = 0; i <= sizeof(grid[0]) - 1; i++)
+	//{
+	//	printf("%c", grid[0][i]);
+	//	if (grid[0][i] == NULL)
+	//		break;
+	//}
 
 	for (i = 1; i < 7; i++)
 		b[i] = 0xa0 + i;
@@ -329,7 +305,7 @@ void draw_rectangle(int w, int h, int x, int y, string str, string content)
 		{
 			// - (str.length() / 2)) {
 			cout << " " << str << " ";
-			i+=(str.length()/2);
+			i += (str.length() / 2);
 		}
 		else
 			printf("%c%c ", a, b[1]);
@@ -348,7 +324,7 @@ void draw_rectangle(int w, int h, int x, int y, string str, string content)
 		printf("\n");
 	}
 
-	gotoxy(x, y + h+1);
+	gotoxy(x, y + h + 1);
 	printf("%c%c", a, b[6]);
 	for (i = 0; i < w; i++)
 		printf("%c%c ", a, b[1]);
@@ -464,29 +440,23 @@ void DrawMap() {
 		for (int j = 0; j < 12; j++) {
 			if (space[i][j] == 1) {
 				gotoxy(j * 2, i);
-				printf("□");
+				board[j * 2][i] = "□";
+				//				printf("□");
 			}
 			else if (space[i][j] >= 2) {
 				gotoxy(j * 2, i);
 				textcolor(space[i][j] + 6, space[i][j] + 6);
-				printf("■");
+
+				//				printf("■");
 			}
-			 textcolor(15, 0);
+			textcolor(15, 0);
 		}
 	}
-
 	cout << ss.str();
 
-
-	gotoxy(25, 1);
-	printf("다음 블럭");
-	//draw_rectangle(10, 8, 25, 1, "다음블럭", "");
-	gotoxy(50, 1);
-	printf("저장된 블럭");
-//	draw_rectangle(10, 3, 25, 12, "점수", to_string(score) + "점");
-	gotoxy(25, 12);
-	printf("총 %d점 / %d콤보", score, comboStack);
-	//draw_rectangle(10, 8, 50, 1, "저장된블럭", "");
+	draw_rectangle(10, 8, 25, 1, "다음블럭", "");
+	draw_rectangle(10, 3, 25, 12, "점수", to_string(score) + "점");
+	draw_rectangle(10, 8, 50, 1, "저장된블럭", "");
 	DrawBlock2(32, 4, nextBlockForm);
 	DrawBlock2(58, 4, saveBlock);
 }
@@ -496,7 +466,7 @@ void DrawBlock() {
 		for (int j = 0; j < 4; j++) {
 			if (block[blockForm][blockRotation][i][j] == 1) {
 				gotoxy(x + j * 2, y + i);
-				
+
 				textcolor(blockForm + 8, blockForm + 8);
 				printf("■");
 				textcolor(15, 0);
@@ -545,7 +515,7 @@ void InputKey() {
 				y++;
 			break;
 		case 13: // Enter
-			if (savedBlock==false)
+			if (savedBlock == false)
 			{
 				if (saveBlock == -1)
 				{
@@ -562,7 +532,6 @@ void InputKey() {
 					saveBlock = blockTrunk;
 				}
 				y = 0;
-				x = 8;
 				savedBlock = true;
 
 				// 이걸 맨위로 보내면 실행 잘  됨.
